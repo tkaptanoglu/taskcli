@@ -9,15 +9,47 @@ void TaskManager::delete_all_tasks() {
 
 void TaskManager::print_all_tasks(const PrintOptions& options) const {
     for (const auto& task : tasks) {
-        print_task(task->get_id(), options);
+        if (!task->get_parent()) {
+            print_task(task.get(), options);
+        }
     }
 }
 
 void TaskManager::print_task(int id, const PrintOptions& options) const {
     for (const auto& task : tasks) {
         if (task->get_id() == id) {
-            // Print task details based on options
+            print_task(task.get(), options);
             return;
+        }
+    }
+}
+
+void TaskManager::print_task(Task* task, const PrintOptions& options) const {
+    if (!task) return;
+    int task_level = task->get_level();
+    for (int i = 0; i < task_level - 1; ++i)
+        std::cout << "--"; // Indentation for task level
+    std::cout << "Task ID: " << task->get_id() << "\n";
+    for (int i = 0; i < task_level - 1; ++i)
+        std::cout << "--"; // Indentation for task level
+    std::cout << "Name: " << task->get_name() << "\n";
+    for (int i = 0; i < task_level - 1; ++i)
+        std::cout << "--"; // Indentation for task level
+    std::cout << "Status: " << static_cast<int>(task->get_status()) << "\n";
+    if (options.verbose) {
+        for (int i = 0; i < task_level - 1; ++i)
+            std::cout << "--"; // Indentation for task level
+        std::cout << "Description: " << task->get_description() << "\n";
+        Person* owner = task->get_owner();
+        if (owner) {
+            std::cout << "Owner: " << owner->get_name() << "\n";
+        } else {
+            std::cout << "Owner: None\n";
+        }
+    }
+    if (options.nested) {
+        for (const auto& child : task->get_children()) {
+            print_task(child.get(), options);
         }
     }
 }

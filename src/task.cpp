@@ -29,12 +29,20 @@ int Task::get_id() const {
     return id;
 }
 
+int Task::get_level() const {
+    return level;
+}
+
 void Task::unown() {
     owner = nullptr;
 }
 
 void Task::set_status(Status status) {
     this->status = status;
+}
+
+Task::Status Task::get_status() const {
+    return status;
 }
 
 int Task::advance_status() {
@@ -68,4 +76,8 @@ Task* Task::get_parent() const {
 
 void Task::add_child(std::unique_ptr<Task> child) {
     children.push_back(std::move(child));
+}
+
+const std::vector<std::unique_ptr<Task>>& Task::get_children() const {
+    return children;
 }
