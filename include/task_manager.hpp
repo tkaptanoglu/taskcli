@@ -45,6 +45,7 @@ private:
     std::vector<std::unique_ptr<Task>> tasks;
 
     void print_line_indentations(int level) const;
+    Task* find_task_by_id(int id) const;
 };
 
 #endif

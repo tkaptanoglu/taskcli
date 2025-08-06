@@ -74,10 +74,10 @@ Task* Task::get_parent() const {
     return parent;
 }
 
-void Task::add_child(std::unique_ptr<Task> child) {
-    children.push_back(std::move(child));
+void Task::add_child(Task* child) {
+    children.push_back(child);
 }
 
-const std::vector<std::unique_ptr<Task>>& Task::get_children() const {
+const std::vector<Task*> Task::get_children() const {
     return children;
 }

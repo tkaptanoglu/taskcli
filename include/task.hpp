@@ -44,8 +44,8 @@ public:
 
     void set_parent(Task* parent);
     Task* get_parent() const;
-    void add_child(std::unique_ptr<Task> child);
-    const std::vector<std::unique_ptr<Task>>& get_children() const;
+    void add_child(Task* child);
+    const std::vector<Task*> get_children() const;
     
 private:
     int id, level;
@@ -53,7 +53,7 @@ private:
     Person* owner;
     Status status;
     Task* parent;
-    std::vector<std::unique_ptr<Task>> children;
+    std::vector<Task*> children;
 };
 
 #endif // TASK_HPP

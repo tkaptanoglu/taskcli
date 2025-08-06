@@ -7,6 +7,15 @@ void TaskManager::delete_all_tasks() {
     tasks.clear();
 }
 
+Task* TaskManager::find_task_by_id(int id) const {
+    for (const auto& task : tasks) {
+        if (task->get_id() == id) {
+            return task.get();
+        }
+    }
+    return nullptr;
+}
+
 void TaskManager::print_all_tasks(const PrintOptions& options) const {
     for (const auto& task : tasks) {
         if (!task->get_parent()) {
@@ -16,16 +25,17 @@ void TaskManager::print_all_tasks(const PrintOptions& options) const {
 }
 
 void TaskManager::print_task(int id, const PrintOptions& options) const {
-    for (const auto& task : tasks) {
-        if (task->get_id() == id) {
-            print_task(task.get(), options);
-            return;
-        }
+    Task* task = find_task_by_id(id);
+    if (!task) {
+        std::cerr << "Task with ID " << id << " not found." << std::endl;
+        return;
     }
+    print_task(task, options);
 }
 
 void TaskManager::print_task(Task* task, const PrintOptions& options) const {
     if (!task) return;
+
     int task_level = task->get_level();
     
     print_line_indentations(task_level);
@@ -46,9 +56,9 @@ void TaskManager::print_task(Task* task, const PrintOptions& options) const {
             std::cout << "Owner: None\n";
         }
     }
-    if (options.nested) {
+    if (options.nested && !task->get_parent()) {
         for (const auto& child : task->get_children()) {
-            print_task(child.get(), options);
+            print_task(child, options);
         }
     }
 }
@@ -60,7 +70,13 @@ void TaskManager::print_line_indentations(int level) const {
 }
 
 int TaskManager::create_task(const std::string& name, const std::string& description, Person* owner, Task* parent) {
-    return -1; // Placeholder for task creation logic
+    int new_id = tasks.size() + 1; // Simple ID generation
+    auto new_task = std::make_unique<Task>(new_id, name, description, owner);
+    if (parent) {
+        parent->add_child(new_task.get());
+    }
+    tasks.push_back(std::move(new_task));
+    return new_id;
 }
 
 int TaskManager::delete_task(int id) {
@@ -84,53 +100,52 @@ void TaskManager::set_task_name(int id, const std::string& name) {
 }
 
 std::string TaskManager::get_task_name(int id) const {
-    for (const auto& task : tasks) {
-        if (task->get_id() == id) {
-            return task->get_name();
-        }
+    Task* task = find_task_by_id(id);
+    if (!task) {
+        return {};
     }
-    return {};
+    return task->get_name();
 }
 
 void TaskManager::set_task_description(int id, const std::string& description) {
-    for (const auto& task : tasks) {
-        if (task->get_id() == id) {
-            task->set_description(description);
-            return;
-        }
+    Task* task = find_task_by_id(id);
+    if (task) {
+        task->set_description(description);
     }
 }
 
 std::string TaskManager::get_task_description(int id) const {
-    for (const auto& task : tasks) {
-        if (task->get_id() == id) {
-            return task->get_description();
-        }
+    Task* task = find_task_by_id(id);
+    if (!task) {
+        return {};
     }
-    return {};
+    return task->get_description();
 }
 
 int TaskManager::advance_task_status(int id) {
-    for (const auto& task : tasks) {
-        if (task->get_id() == id) {
-            return task->advance_status();
-        }
+    Task* task = find_task_by_id(id);
+    if (task) {
+        return task->advance_status();
     }
     return -1; // Task not found
 }
 
 int TaskManager::mark_task_as_done(int id) {
-    for (const auto& task : tasks) {
-        if (task->get_id() == id) {
-            task->mark_as_done();
-            return 0; // Success
-        }
+    Task* task = find_task_by_id(id);
+    if (task) {
+        task->mark_as_done();
+        return 0; // Success
     }
     return -1; // Task not found
 }
 
 void TaskManager::make_child_task(int parent_id, int child_id) {
-    
+    Task* parent = find_task_by_id(parent_id);
+    Task* child = find_task_by_id(child_id);
+    if (parent && child) {
+        parent->add_child(child);
+        child->set_parent(parent);
+    }
 }
 
 void TaskManager::print_all_task_owners(const PrintOptions& options) const {
