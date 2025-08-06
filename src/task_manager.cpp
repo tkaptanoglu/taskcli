@@ -92,7 +92,15 @@ int TaskManager::delete_task(int id) {
 }
 
 void TaskManager::assign_task(int id, Person* person) {
-
+    Task* task = find_task_by_id(id);
+    if (task && person) {
+        task->set_owner(person);
+        person->assign_task(task);
+    } else if (!task) {
+        std::cerr << "Task with ID " << id << " not found." << std::endl;
+    } else if (!person) {
+        std::cerr << "Person not found." << std::endl;  
+    }
 }
 
 void TaskManager::unown_task(int id) {
