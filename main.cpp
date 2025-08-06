@@ -34,6 +34,34 @@ void print_person_help() {
     std::cout << "  delete     Delete a person\n";
 }
 
+int handle_task_command(int argc, char* argv[]) {
+    if (argc < 1) {
+            std::cerr << "Error: No command provided for 'task'. Use --help for usage.\n";
+            return 1;
+        }
+        std::string command = argv[1];
+        if (command == "--help") {
+            print_task_help();
+            return 0;
+        }
+
+        return 0;
+}
+
+int handle_person_command(int argc, char* argv[]) {
+    if (argc < 1) {
+        std::cerr << "Error: No command provided for 'person'. Use --help for usage.\n";
+        return 1;
+    }
+    std::string command = argv[1];
+    if (command == "--help") {
+        print_person_help();
+        return 0;
+    }
+
+    return 0;
+}
+
 int main(int argc, char* argv[]) {
     if (argc == 1) {
         std::cerr << "Error: No arguments provided. Use --help for usage.\n";
@@ -45,25 +73,9 @@ int main(int argc, char* argv[]) {
         print_help();
         return 0;
     } else if (first_arg == "task") {
-        if (argc < 2) {
-            std::cerr << "Error: No command provided for 'task'. Use --help for usage.\n";
-            return 1;
-        }
-        std::string command = argv[2];
-        if (command == "--help") {
-            print_task_help();
-            return 0;
-        }
+        return handle_task_command(argc - 1, argv + 1);
     } else if (first_arg == "person") {
-        if (argc < 2) {
-            std::cerr << "Error: No command provided for 'person'. Use --help for usage.\n";
-            return 1;
-        }
-        std::string command = argv[2];
-        if (command == "--help") {
-            print_person_help();
-            return 0;
-        }
+        return handle_person_command(argc - 1, argv + 1);
     }   
 
     std::cerr << "Error: Unknown argument '" << first_arg << "'. Use --help for usage.\n";
