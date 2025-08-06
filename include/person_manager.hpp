@@ -19,7 +19,7 @@ public:
 
     int delete_persons_all_tasks(const std::string& name);
     int set_persons_all_tasks_as_done(const std::string& name);
-    void assign_task(const Task& task);
+    void assign_task(Person* person, const Task& task);
 
     // Print operations
     void print_all_people() const;

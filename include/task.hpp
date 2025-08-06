@@ -26,6 +26,7 @@ public:
     std::string get_description() const;
     void set_description(const std::string& description);
 
+    Person* get_owner() const;
     void set_owner(Person* person);
     void unown();
 

@@ -19,6 +19,9 @@ public:
         bool nested = true;
     };
 
+    std::string get_name() const;
+    void set_name(const std::string& new_name);
+
     void remove_all_tasks();
     void print_all_tasks(const PrintOptions& options = {}) const;
     void set_all_tasks_to_done();
