@@ -29,6 +29,9 @@ public:
 
     int get_id() const;
 
+    void set_level(int level);
+    int get_level() const;
+
     Person* get_owner() const;
     void set_owner(Person* person = nullptr);
     void unown();
@@ -43,7 +46,7 @@ public:
     void add_child(std::unique_ptr<Task> child);
     
 private:
-    int id;
+    int id, level;
     std::string name, description;
     Person* owner;
     Status status;
