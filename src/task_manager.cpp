@@ -2,6 +2,7 @@
 #include "person.hpp"
 
 #include <iostream>
+#include <algorithm>
 
 void TaskManager::delete_all_tasks() {
     tasks.clear();
@@ -80,7 +81,14 @@ int TaskManager::create_task(const std::string& name, const std::string& descrip
 }
 
 int TaskManager::delete_task(int id) {
-    return -1; // Placeholder for task deletion logic
+    Task* task = find_task_by_id(id);
+    if (!task) {
+        std::cerr << "Task with ID " << id << " not found." << std::endl;
+        return -1; // Task not found
+    }
+    tasks.erase(std::remove_if(tasks.begin(), tasks.end(),
+        [task](const std::unique_ptr<Task>& t) { return t.get() == task; }), tasks.end());
+    return 0; // Success
 }
 
 void TaskManager::assign_task(int id, Person* person) {
