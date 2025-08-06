@@ -44,6 +44,7 @@ public:
     void set_parent(Task* parent);
     Task* get_parent() const;
     void add_child(std::unique_ptr<Task> child);
+    const std::vector<std::unique_ptr<Task>>& get_children() const;
     
 private:
     int id, level;
