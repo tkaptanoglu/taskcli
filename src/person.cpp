@@ -1,6 +1,8 @@
 #include "person.hpp"
 #include "task.hpp"
 
+#include <algorithm>
+
 Person::Person(const std::string& name) : name(name) {}
 
 Person::~Person() {
@@ -22,8 +24,11 @@ void Person::remove_all_tasks() {
     tasks.clear();
 }
 
-void Person::print_all_tasks(const PrintOptions& options) const {
-   
+void Person::remove_task(Task* task) {
+    auto it = std::find(tasks.begin(), tasks.end(), task);
+    if (it != tasks.end()) {
+        tasks.erase(it);
+    }
 }
 
 void Person::set_all_tasks_to_done() {

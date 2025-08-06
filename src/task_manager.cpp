@@ -104,6 +104,16 @@ void TaskManager::assign_task(int id, Person* person) {
 }
 
 void TaskManager::unown_task(int id) {
+    Task* task = find_task_by_id(id);
+    if (task) {
+        task->unown();
+        Person* owner = task->get_owner();
+        if (owner) {
+            owner->remove_task(task);
+        }
+    } else {
+        std::cerr << "Task with ID " << id << " not found." << std::endl;
+    }
 }
 
 void TaskManager::unown_all_tasks() {

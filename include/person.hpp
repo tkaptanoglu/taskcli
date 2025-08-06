@@ -22,6 +22,7 @@ public:
     void set_name(const std::string& new_name);
 
     void remove_all_tasks();
+    void remove_task(Task* task);
     void print_all_tasks(const PrintOptions& options = PrintOptions()) const;
     void set_all_tasks_to_done();
     int return_number_of_tasks(const TaskOptions& options = TaskOptions()) const;
