@@ -8,11 +8,18 @@ void TaskManager::delete_all_tasks() {
 }
 
 void TaskManager::print_all_tasks(const PrintOptions& options) const {
-
+    for (const auto& task : tasks) {
+        print_task(task->get_id(), options);
+    }
 }
 
 void TaskManager::print_task(int id, const PrintOptions& options) const {
-
+    for (const auto& task : tasks) {
+        if (task->get_id() == id) {
+            // Print task details based on options
+            return;
+        }
+    }
 }
 
 int TaskManager::create_task(const std::string& name, const std::string& description, Person* owner, Task* parent) {
