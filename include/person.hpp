@@ -27,6 +27,7 @@ public:
     void set_all_tasks_to_done();
     int return_number_of_tasks(const TaskOptions& options = TaskOptions()) const;
     void assign_task(Task* task);
+    std::vector<Task*> get_tasks() const;
 private:
     std::string name;
     std::vector<Task*> tasks;

@@ -53,3 +53,7 @@ int Person::return_number_of_tasks(const TaskOptions& options) const {
 void Person::assign_task(Task* task) {
     tasks.push_back(task);
 }
+
+std::vector<Task*> Person::get_tasks() const {
+    return tasks;
+}

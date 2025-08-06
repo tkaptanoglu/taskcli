@@ -16,10 +16,11 @@ public:
     int change_name(const std::string& old_name, const std::string& new_name);
 
     void delete_all_people();
+    void add_person(const std::string& name);
 
     int delete_persons_all_tasks(const std::string& name);
     int set_persons_all_tasks_as_done(const std::string& name);
-    void assign_task(Person* person, const Task& task);
+    void assign_task(Person* person, Task* task);
 
     // Print operations
     void print_all_people() const;
@@ -28,6 +29,7 @@ public:
     void print_all_peoples_task_counts(bool nested) const;
 private:
     std::vector<std::unique_ptr<Person>> people;
+    std::unique_ptr<Person> find_person_by_name(const std::string& name) const;
 };
 
 #endif
