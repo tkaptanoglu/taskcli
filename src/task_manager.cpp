@@ -27,18 +27,17 @@ void TaskManager::print_task(int id, const PrintOptions& options) const {
 void TaskManager::print_task(Task* task, const PrintOptions& options) const {
     if (!task) return;
     int task_level = task->get_level();
-    for (int i = 0; i < task_level - 1; ++i)
-        std::cout << "--"; // Indentation for task level
+    
+    print_line_indentations(task_level);
     std::cout << "Task ID: " << task->get_id() << "\n";
-    for (int i = 0; i < task_level - 1; ++i)
-        std::cout << "--"; // Indentation for task level
+
+    print_line_indentations(task_level);
     std::cout << "Name: " << task->get_name() << "\n";
-    for (int i = 0; i < task_level - 1; ++i)
-        std::cout << "--"; // Indentation for task level
+    
+    print_line_indentations(task_level);
     std::cout << "Status: " << static_cast<int>(task->get_status()) << "\n";
     if (options.verbose) {
-        for (int i = 0; i < task_level - 1; ++i)
-            std::cout << "--"; // Indentation for task level
+        print_line_indentations(task_level);
         std::cout << "Description: " << task->get_description() << "\n";
         Person* owner = task->get_owner();
         if (owner) {
@@ -51,6 +50,12 @@ void TaskManager::print_task(Task* task, const PrintOptions& options) const {
         for (const auto& child : task->get_children()) {
             print_task(child.get(), options);
         }
+    }
+}
+
+void TaskManager::print_line_indentations(int level) const {
+    for (int i = 0; i < level - 1; ++i) {
+        std::cout << "-"; // Indentation for task level
     }
 }
 

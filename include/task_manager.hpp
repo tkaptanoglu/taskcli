@@ -43,6 +43,8 @@ public:
     void print_all_task_owners(const PrintOptions& options) const;
 private:
     std::vector<std::unique_ptr<Task>> tasks;
+
+    void print_line_indentations(int level) const;
 };
 
 #endif
