@@ -4,7 +4,8 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include "person.hpp"
+
+class Person;
 
 class Task {
 public:
@@ -27,12 +28,13 @@ public:
     void set_description(const std::string& description);
 
     Person* get_owner() const;
-    void set_owner(Person* person);
+    void set_owner(Person* person = nullptr);
     void unown();
 
     void set_status(Status status);
     int advance_status();
     void mark_as_done();
+    bool is_done() const;
 
     void set_parent(Task* parent);
     Task* get_parent() const;
