@@ -17,6 +17,7 @@ public:
 
     void delete_all_people();
     void add_person(const std::string& name);
+    int delete_person(const std::string& name);
 
     int delete_persons_all_tasks(const std::string& name);
     int set_persons_all_tasks_as_done(const std::string& name);

@@ -90,6 +90,25 @@ int handle_person_command(int argc, char* argv[]) {
     } else if (command == "list") {
         std::cout << "Listing all people...\n";
         get_person_manager().print_all_people(); // Print all people using PersonManager
+    } else if (command == "rename") {
+        if (argc < 4) {
+            std::cerr << "Error: Not enough arguments for 'rename'. Use --help for usage.\n";
+            return 1;
+        }
+        std::string old_name = argv[2];
+        std::string new_name = argv[3];
+        if (new_name.empty()) {
+            std::cerr << "Error: New name cannot be empty.\n";
+            return 1;
+        }
+        get_person_manager().change_name(old_name, new_name);
+    } else if (command == "delete") {
+        if (argc < 3) {
+            std::cerr << "Error: Not enough arguments for 'delete'. Use --help for usage.\n";
+            return 1;
+        }
+        std::string name = argv[2];
+        get_person_manager().delete_person(name);
     }
 
     return 0;

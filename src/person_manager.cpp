@@ -3,6 +3,7 @@
 #include "task.hpp"
 
 #include <iostream>
+#include <algorithm>
 
 // PersonManager class implementation
 PersonManager::PersonManager() = default;  
@@ -110,4 +111,17 @@ void PersonManager::print_all_peoples_task_counts(bool nested) const {
     for (const auto& person : people) {
         std::cout << person->get_name() << ": " << person->return_number_of_tasks(TaskOptions{true, nested}) << std::endl;
     }
+}
+
+// Delete a person by name
+int PersonManager::delete_person(const std::string& name) {
+    auto it = std::remove_if(people.begin(), people.end(),
+        [&name](const std::unique_ptr<Person>& person) {
+            return person->get_name() == name;
+        });
+    if (it != people.end()) {
+        people.erase(it, people.end());
+        return 0;  // Success
+    }
+    return -1;  // Person not found
 }
