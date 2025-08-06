@@ -19,6 +19,7 @@ public:
     void delete_all_tasks();
 
     void print_all_tasks(const PrintOptions& options) const;
+    void print_task(Task* task, const PrintOptions& options) const;
     void print_task(int id, const PrintOptions& options) const;
 
     int create_task(const std::string& name, const std::string& description, Person* owner = nullptr, Task* parent = nullptr);
