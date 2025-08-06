@@ -123,6 +123,12 @@ void TaskManager::unown_all_tasks() {
 }
 
 void TaskManager::set_task_name(int id, const std::string& name) {
+    Task* task = find_task_by_id(id);
+    if (task) {
+        task->set_name(name);
+    } else {
+        std::cerr << "Task with ID " << id << " not found." << std::endl;
+    }
 }
 
 std::string TaskManager::get_task_name(int id) const {
