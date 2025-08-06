@@ -27,6 +27,8 @@ public:
     std::string get_description() const;
     void set_description(const std::string& description);
 
+    int get_id() const;
+
     Person* get_owner() const;
     void set_owner(Person* person = nullptr);
     void unown();
