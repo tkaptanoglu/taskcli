@@ -13,7 +13,7 @@ public:
         bool nested = false;
     };
 
-    TaskManager();
+    TaskManager() = default;
     ~TaskManager() = default;
 
     void delete_all_tasks();
