@@ -37,6 +37,7 @@ public:
     void unown();
 
     void set_status(Status status);
+    Status get_status() const;
     int advance_status();
     void mark_as_done();
     bool is_done() const;
