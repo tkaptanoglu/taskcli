@@ -1,0 +1,28 @@
+# Build files
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Executables
+*.exe
+*.out
+*.o
+*.obj
+
+# VS Code
+.vscode/settings.json
+.vscode/launch.json
+.vscode/c_cpp_properties.json
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Backup & temp
+*.log
+*.tmp
+*.bak
+*.swp
+*~
