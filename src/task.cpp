@@ -1,7 +1,7 @@
 #include "task.hpp"
 #include "person.hpp"
 
-std::string Task::get_name() const {
+const std::string Task::get_name() const {
     return name;
 }
 
@@ -9,7 +9,7 @@ void Task::set_name(const std::string& name) {
     this->name = name;
 }
 
-std::string Task::get_description() const {
+const std::string Task::get_description() const {
     return description;
 }
 

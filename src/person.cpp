@@ -9,7 +9,7 @@ Person::~Person() {
     remove_all_tasks();
 }
 
-std::string Person::get_name() const {
+const std::string Person::get_name() const {
     return name;
 }
 

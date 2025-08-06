@@ -131,10 +131,10 @@ void TaskManager::set_task_name(int id, const std::string& name) {
     }
 }
 
-std::string TaskManager::get_task_name(int id) const {
+const std::string TaskManager::get_task_name(int id) const {
     Task* task = find_task_by_id(id);
     if (!task) {
-        return {};
+        return "Task with id " + std::to_string(id) + " not found";;
     }
     return task->get_name();
 }
@@ -146,10 +146,10 @@ void TaskManager::set_task_description(int id, const std::string& description) {
     }
 }
 
-std::string TaskManager::get_task_description(int id) const {
+const std::string TaskManager::get_task_description(int id) const {
     Task* task = find_task_by_id(id);
     if (!task) {
-        return {};
+        return "Task with id " + std::to_string(id) + " not found";
     }
     return task->get_description();
 }

@@ -18,7 +18,7 @@ public:
     Person(const std::string& name);
     ~Person();
 
-    std::string get_name() const;
+    const std::string get_name() const;
     void set_name(const std::string& new_name);
 
     void remove_all_tasks();

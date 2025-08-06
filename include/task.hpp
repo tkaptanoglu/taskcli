@@ -21,10 +21,10 @@ public:
         : id(id), name(name), description(description), owner(owner), status(status), parent(parent) {}
     ~Task() = default;
 
-    std::string get_name() const;
+    const std::string get_name() const;
     void set_name(const std::string& name);
 
-    std::string get_description() const;
+    const std::string get_description() const;
     void set_description(const std::string& description);
 
     int get_id() const;
