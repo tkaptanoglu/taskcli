@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <sstream>
+#include <vector>
 
 #include "task_manager.hpp"
 #include "person_manager.hpp"
@@ -50,7 +52,7 @@ void print_person_help() {
 }
 
 
-int handle_task_command(int argc, char* argv[]) {
+int handle_task_command(int argc, const char* argv[]) {
     if (argc < 1) {
         std::cerr << "Error: No command provided for 'task'. Use --help for usage.\n";
         return 1;
@@ -64,7 +66,7 @@ int handle_task_command(int argc, char* argv[]) {
     return 0;
 }
 
-int handle_person_command(int argc, char* argv[]) {
+int handle_person_command(int argc, const char* argv[]) {
     if (argc < 1) {
         std::cerr << "Error: No command provided for 'person'. Use --help for usage.\n";
         return 1;
@@ -114,23 +116,54 @@ int handle_person_command(int argc, char* argv[]) {
     return 0;
 }
 
-int main(int argc, char* argv[]) {
+int main() {
+    std::string line;
 
-    if (argc == 1) {
-        std::cerr << "Error: No arguments provided. Use --help for usage.\n";
-        return 1;
+    std::cout << "Welcome to the Task Manager CLI Tool!\n";
+    std::cout << "Type 'help' for usage instructions.\n";
+
+    while (true) {
+        std::cout << "> ";
+        std::getline(std::cin, line);
+        if (line.empty()) continue;
+
+        // Exit command
+        if (line == "exit" || line == "quit") {
+            std::cout << "Exiting the Task Manager CLI Tool. Goodbye!\n";
+            break;
+        }
+
+         // Parse and handle command
+        std::istringstream iss(line);
+        std::string command;
+        iss >> command;
+
+        // Collect remaining tokens into a vector
+        std::vector<std::string> args;
+        std::string arg;
+        while (iss >> arg) {
+            args.push_back(arg);
+        }
+
+        std::vector<const char*> argv_like;
+        for (const auto& a : args) {
+            argv_like.push_back(a.c_str());
+        }
+        int argc = argv_like.size(); // +1 for the command itself
+
+        if (command == "help") {
+            print_help();
+            continue;
+        }
+        if (command == "task") {
+            handle_task_command(argc, argv_like.data());
+        } else if (command == "person") {
+            handle_person_command(argc, argv_like.data());
+        } else {
+            std::cerr << "Error: Unknown command '" << command << "'. Type 'help' for usage instructions.\n";
+        }
     }
 
-    std::string first_arg = argv[1];
-    if (first_arg == "--help") {
-        print_help();
-        return 0;
-    } else if (first_arg == "task") {
-        return handle_task_command(argc - 1, argv + 1);
-    } else if (first_arg == "person") {
-        return handle_person_command(argc - 1, argv + 1);
-    }   
-
-    std::cerr << "Error: Unknown argument '" << first_arg << "'. Use --help for usage.\n";
-    return 1;
+    std::cout << "Goodbye.\n";
+    return 0;
 }
