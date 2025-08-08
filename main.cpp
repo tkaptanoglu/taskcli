@@ -85,6 +85,7 @@ int handle_person_command(int argc, const char* argv[]) {
             return 1;
         }
         get_person_manager().add_person(name); // Add person using PersonManager
+        std::cout << "Person '" << name << "' added successfully.\n";
     } else if (command == "list") {
         std::cout << "Listing all people...\n";
         get_person_manager().print_all_people(); // Print all people using PersonManager
@@ -99,14 +100,22 @@ int handle_person_command(int argc, const char* argv[]) {
             std::cerr << "Error: New name cannot be empty.\n";
             return 1;
         }
-        get_person_manager().change_name(old_name, new_name);
+        if (get_person_manager().change_name(old_name, new_name)) {
+            std::cout << "Person '" << old_name << "' renamed to '" << new_name << "' successfully.\n";
+        } else {
+            std::cerr << "Error: Failed to rename person '" << old_name << "'.\n";
+        }
     } else if (command == "delete") {
         if (argc < 3) {
             std::cerr << "Error: Not enough arguments for 'delete'. Use --help for usage.\n";
             return 1;
         }
         std::string name = argv[2];
-        get_person_manager().delete_person(name);
+        if (get_person_manager().delete_person(name)) {
+            std::cout << "Person '" << name << "' deleted successfully.\n";
+        } else {
+            std::cerr << "Error: Failed to delete person '" << name << "'.\n";
+        }
     }
 
     return 0;
