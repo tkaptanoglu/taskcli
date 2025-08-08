@@ -77,10 +77,6 @@ int handle_person_command(int argc, const char* argv[]) {
         return 0;
     }
     
-    if (argc < 2) {
-        std::cerr << "Error: No options provided for 'person " << command << "'. Use --help for usage.\n";
-        return 1;
-    }
     if (command == "add") {
         std::cout << "Adding a new person...\n";
         std::string name = argv[2];
