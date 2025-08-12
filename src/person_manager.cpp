@@ -67,12 +67,15 @@ int PersonManager::set_persons_all_tasks_as_done(const std::string& name) {
 }
 
 // Assign a task to a person
-void PersonManager::assign_task(Person* person, Task* task) {
+int PersonManager::assign_task(const std::string& name, Task* task) {
+    auto person = find_person_by_name(name);
     if (person) {
         person->assign_task(task);
+        return 0;  // Success
     } else {
         std::cerr << "Error: Person is null." << std::endl;
     }
+    return -1;  // Failure
 }
 
 // Print operations

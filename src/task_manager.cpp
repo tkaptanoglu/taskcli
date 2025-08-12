@@ -190,3 +190,12 @@ void TaskManager::print_all_task_owners(const PrintOptions& options) const {
         }
     }
 }
+
+Task* TaskManager::get_task(int id) const {
+    for (const auto& task : tasks) {
+        if (task->get_id() == id) {
+            return task.get();
+        }
+    }
+    return nullptr;
+}

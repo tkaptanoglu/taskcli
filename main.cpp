@@ -46,10 +46,12 @@ void print_person_help() {
     std::cout << "Usage:\n";
     std::cout << "  taskcli person <command> [options]\n\n";
     std::cout << "Commands:\n";
-    std::cout << "  add        Add a new person\n";
-    std::cout << "  list       List all people\n";
-    std::cout << "  rename     Rename a person\n";
-    std::cout << "  delete     Delete a person\n";
+    std::cout << "  add <name>                      Add a new person\n";
+    std::cout << "  list                            List all people\n";
+    std::cout << "  rename <old-name> <new-name>    Rename a person\n";
+    std::cout << "  delete <name>                   Delete a person\n";
+    std::cout << "  delete-all                      Delete all people\n";
+    std::cout << "  assign-task <name> <task-id>    Assign a task to a person\n";
 }
 
 
@@ -121,6 +123,29 @@ int handle_person_command(std::span<const std::string> args) {
         } else {
             std::cerr << "Error: Failed to delete person '" << name << "'.\n";
         }
+    } else if (command == "delete-all") {
+        get_person_manager().delete_all_people();
+        std::cout << "All people deleted successfully.\n";
+    } else if (command == "delete-tasks") {
+        if (args.size() < 2) {
+            std::cerr << "Error: Not enough arguments for 'delete-tasks'. Use --help for usage.\n";
+            return 1;
+        }
+        std::string name = args[1];
+        get_person_manager().delete_persons_all_tasks(name);
+    } else if (command == "assign-task") {
+        if (args.size() < 3) {
+            std::cerr << "Error: Not enough arguments for 'assign-task'. Use --help for usage.\n";
+            return 1;
+        }
+        std::string name = args[1];
+        int task_id = std::stoi(args[2]);
+        Task* task = get_task_manager().get_task(task_id);
+        if (task == nullptr) {
+            std::cerr << "Error: Task with ID " << task_id << " not found.\n";
+            return 1;
+        }
+        get_person_manager().assign_task(name, task);
     }
 
     return 0;

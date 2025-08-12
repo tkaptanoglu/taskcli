@@ -41,6 +41,8 @@ public:
     void make_child_task(int parent_id, int child_id);
 
     void print_all_task_owners(const PrintOptions& options) const;
+
+    Task* get_task(int id) const;
 private:
     std::vector<std::unique_ptr<Task>> tasks;
 
