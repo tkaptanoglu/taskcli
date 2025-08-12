@@ -166,7 +166,7 @@ int main() {
             continue;
         }
         if (command == "task") {
-            handle_task_command(std::span<const std::string>(args).subspan(1));
+            handle_task_command(args);
         } else if (command == "person") {
             handle_person_command(args);
         } else {
