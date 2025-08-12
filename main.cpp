@@ -59,7 +59,7 @@ int handle_task_command(std::span<const std::string> args) {
         return 1;
     }
     std::string command = args[0];
-    if (command == "--help") {
+    if (command == "help") {
         print_task_help();
         return 0;
     }
@@ -73,13 +73,16 @@ int handle_person_command(std::span<const std::string> args) {
         return 1;
     }
     std::string command = args[0];
-    std::cout << "Person command: " << command << "\n";
-    if (command == "--help") {
+    if (command == "help") {
         print_person_help();
         return 0;
     }
     
     if (command == "add") {
+        if (args.size() < 2) {
+            std::cerr << "Error: Not enough arguments for 'add'. Use --help for usage.\n";
+            return 1;
+        }
         std::cout << "Adding a new person...\n";
         std::string name = args[1];
         if (name.empty()) {
