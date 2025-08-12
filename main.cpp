@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <span>
 
 #include "task_manager.hpp"
 #include "person_manager.hpp"
@@ -52,12 +53,12 @@ void print_person_help() {
 }
 
 
-int handle_task_command(int argc, const char* argv[]) {
-    if (argc < 1) {
+int handle_task_command(std::span<const std::string> args) {
+    if (args.empty()) {
         std::cerr << "Error: No command provided for 'task'. Use --help for usage.\n";
         return 1;
     }
-    std::string command = argv[1];
+    std::string command = args[0];
     if (command == "--help") {
         print_task_help();
         return 0;
@@ -66,12 +67,13 @@ int handle_task_command(int argc, const char* argv[]) {
     return 0;
 }
 
-int handle_person_command(int argc, const char* argv[]) {
-    if (argc < 1) {
+int handle_person_command(std::span<const std::string> args) {
+    if (args.empty()) {
         std::cerr << "Error: No command provided for 'person'. Use --help for usage.\n";
         return 1;
     }
-    std::string command = argv[1];
+    std::string command = args[0];
+    std::cout << "Person command: " << command << "\n";
     if (command == "--help") {
         print_person_help();
         return 0;
@@ -79,7 +81,7 @@ int handle_person_command(int argc, const char* argv[]) {
     
     if (command == "add") {
         std::cout << "Adding a new person...\n";
-        std::string name = argv[2];
+        std::string name = args[1];
         if (name.empty()) {
             std::cerr << "Error: Name cannot be empty.\n";
             return 1;
@@ -90,12 +92,12 @@ int handle_person_command(int argc, const char* argv[]) {
         std::cout << "Listing all people...\n";
         get_person_manager().print_all_people(); // Print all people using PersonManager
     } else if (command == "rename") {
-        if (argc < 4) {
+        if (args.size() < 4) {
             std::cerr << "Error: Not enough arguments for 'rename'. Use --help for usage.\n";
             return 1;
         }
-        std::string old_name = argv[2];
-        std::string new_name = argv[3];
+        std::string old_name = args[2];
+        std::string new_name = args[3];
         if (new_name.empty()) {
             std::cerr << "Error: New name cannot be empty.\n";
             return 1;
@@ -106,11 +108,11 @@ int handle_person_command(int argc, const char* argv[]) {
             std::cerr << "Error: Failed to rename person '" << old_name << "'.\n";
         }
     } else if (command == "delete") {
-        if (argc < 3) {
+        if (args.size() < 2) {
             std::cerr << "Error: Not enough arguments for 'delete'. Use --help for usage.\n";
             return 1;
         }
-        std::string name = argv[2];
+        std::string name = args[1];
         if (get_person_manager().delete_person(name)) {
             std::cout << "Person '" << name << "' deleted successfully.\n";
         } else {
@@ -161,9 +163,9 @@ int main() {
             continue;
         }
         if (command == "task") {
-            handle_task_command(argc, argv_like.data());
+            handle_task_command(std::span<const std::string>(args).subspan(1));
         } else if (command == "person") {
-            handle_person_command(argc, argv_like.data());
+            handle_person_command(args);
         } else {
             std::cerr << "Error: Unknown command '" << command << "'. Type 'help' for usage instructions.\n";
         }
