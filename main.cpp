@@ -3,9 +3,11 @@
 #include <sstream>
 #include <vector>
 #include <span>
+#include <algorithm>
 
 #include "task_manager.hpp"
 #include "person_manager.hpp"
+#include "print_options.hpp"
 
 // Singleton accessor for TaskManager
 TaskManager& get_task_manager() {
@@ -46,12 +48,17 @@ void print_person_help() {
     std::cout << "Usage:\n";
     std::cout << "  taskcli person <command> [options]\n\n";
     std::cout << "Commands:\n";
-    std::cout << "  add <name>                      Add a new person\n";
-    std::cout << "  list                            List all people\n";
-    std::cout << "  rename <old-name> <new-name>    Rename a person\n";
-    std::cout << "  delete <name>                   Delete a person\n";
-    std::cout << "  delete-all                      Delete all people\n";
-    std::cout << "  assign-task <name> <task-id>    Assign a task to a person\n";
+    std::cout << "  add <name>                                   Add a new person\n";
+    std::cout << "  list [-v:verbose]                            List all people\n";
+    std::cout << "  rename <old-name> <new-name>                 Rename a person\n";
+    std::cout << "  delete <name>                                Delete a person\n";
+    std::cout << "  delete-all                                   Delete all people\n";
+    std::cout << "  delete-tasks                                 Delete all tasks assigned to a person\n";
+    std::cout << "  assign-task <name> <task-id>                 Assign a task to a person\n";
+    std::cout << "  set-all-tasks-done <name>                    Mark all tasks of a person as done\n";
+    std::cout << "  list-one <name> [-v:verbose]                 List the details of one person";
+    std::cout << "  list-tasks <name> [-v:verbose] [-n:nested]   List all tasks of a person\n";
+    std::cout << "  list-tasks-count <name>                      List the count of tasks of a person\n";
 }
 
 
@@ -94,8 +101,10 @@ int handle_person_command(std::span<const std::string> args) {
         get_person_manager().add_person(name); // Add person using PersonManager
         std::cout << "Person '" << name << "' added successfully.\n";
     } else if (command == "list") {
+        PrintOptions options;
+        options.verbose = std::find(args.begin(), args.end(), "-v") != args.end();
         std::cout << "Listing all people...\n";
-        get_person_manager().print_all_people(); // Print all people using PersonManager
+        get_person_manager().print_all_people(options); // Print all people using PersonManager
     } else if (command == "rename") {
         if (args.size() < 4) {
             std::cerr << "Error: Not enough arguments for 'rename'. Use --help for usage.\n";
@@ -146,6 +155,35 @@ int handle_person_command(std::span<const std::string> args) {
             return 1;
         }
         get_person_manager().assign_task(name, task);
+    } else if (command == "set-all-tasks-done") {
+        if (args.size() < 2) {
+            std::cerr << "Error: Not enough arguments for 'set-all-tasks-done'. Use --help for usage.\n";
+            return 1;
+        }
+        std::string name = args[1];
+        get_person_manager().set_persons_all_tasks_as_done(name);
+    } else if (command == "list-one") {
+        if (args.size() < 2) {
+            std::cerr << "Error: Not enough arguments for 'list-one'. Use --help for usage.\n";
+            return 1;
+        }
+        PrintOptions options;
+        options.verbose = std::find(args.begin(), args.end(), "-v") != args.end();
+        std::string name = args[1];
+        get_person_manager().print_person(name, options);
+    } else if (command == "list-tasks") {
+        if (args.size() < 2) {
+            std::cerr << "Error: Not enough arguments for 'list-tasks'. Use --help for usage.\n";
+            return 1;
+        }
+        PrintOptions options;
+        options.verbose = std::find(args.begin(), args.end(), "-v") != args.end();
+        options.nested = std::find(args.begin(), args.end(), "-n") != args.end();
+        std::string name = args[1];
+        get_person_manager().print_persons_tasks(name, options);
+    } else if (command == "list-tasks-count") {
+        bool nested = std::find(args.begin(), args.end(), "-n") != args.end();
+        get_person_manager().print_all_peoples_task_counts(nested);
     }
 
     return 0;

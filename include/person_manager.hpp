@@ -6,9 +6,11 @@
 #include <vector>
 #include "person.hpp"
 #include "task.hpp"
+#include "print_options.hpp"
 
 class PersonManager {
 public:
+
     PersonManager();
     ~PersonManager();
 
@@ -24,9 +26,9 @@ public:
     int assign_task(const std::string& name, Task* task);
 
     // Print operations
-    void print_all_people() const;
-    void print_person(const std::string& name) const;
-    void print_persons_tasks(const std::string& name, bool nested) const;
+    void print_all_people(const PrintOptions& options) const;
+    void print_person(const std::string& name, const PrintOptions& options) const;
+    void print_persons_tasks(const std::string& name, const PrintOptions& options) const;
     void print_all_peoples_task_counts(bool nested) const;
 private:
     std::vector<std::unique_ptr<Person>> people;

@@ -81,28 +81,34 @@ int PersonManager::assign_task(const std::string& name, Task* task) {
 // Print operations
 
 // Print all people
-void PersonManager::print_all_people() const {
+void PersonManager::print_all_people(const PrintOptions& options) const {
     for (const auto& person : people) {
         std::cout << person->get_name() << std::endl;
+        if (options.verbose) {
+            person->print_all_tasks(options);
+        }
     }
 }
 
 // Print a specific person
-void PersonManager::print_person(const std::string& name) const {
+void PersonManager::print_person(const std::string& name, const PrintOptions& options) const {
     auto person = find_person_by_name(name);
     if (person) {
         std::cout << person->get_name() << std::endl;
+        if (options.verbose) {
+            person->print_all_tasks(options);
+        }
         return;
     }
     std::cerr << "Error: Person '" << name << "' not found." << std::endl;
 }
 
 // Print a person's tasks
-void PersonManager::print_persons_tasks(const std::string& name, bool nested) const {
+void PersonManager::print_persons_tasks(const std::string& name, const PrintOptions& options) const {
     auto person = find_person_by_name(name);
     if (person) {
         for(const auto& task : person->get_tasks()) {
-            std::cout << " - " << task->get_name() << std::endl; // Extend later with nested printing
+            std::cout << " - " << task->get_id() << ": " << task->get_name() << std::endl; // Extend later with nested printing
         }
         return;
     }
@@ -111,8 +117,10 @@ void PersonManager::print_persons_tasks(const std::string& name, bool nested) co
 
 // Print all people's task counts
 void PersonManager::print_all_peoples_task_counts(bool nested) const {
+    PrintOptions options;
+    options.nested = nested;
     for (const auto& person : people) {
-        std::cout << person->get_name() << ": " << person->return_number_of_tasks(TaskOptions{true, nested}) << std::endl;
+        std::cout << person->get_name() << ": " << person->return_number_of_tasks(options) << std::endl;
     }
 }
 

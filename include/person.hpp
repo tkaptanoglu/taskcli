@@ -4,15 +4,8 @@
 #include <string>
 #include <vector>
 #include "task.hpp"
+#include "print_options.hpp"
 
-struct PrintOptions {
-    bool verbose = false;
-    bool nested = false;
-};
-struct TaskOptions {
-    bool include_done = false;
-    bool nested = true;
-};
 class Person {
 public:
     Person(const std::string& name);
@@ -25,7 +18,7 @@ public:
     void remove_task(Task* task);
     void print_all_tasks(const PrintOptions& options = PrintOptions()) const;
     void set_all_tasks_to_done();
-    int return_number_of_tasks(const TaskOptions& options = TaskOptions()) const;
+    int return_number_of_tasks(const PrintOptions& options = PrintOptions()) const;
     void assign_task(Task* task);
     std::vector<Task*> get_tasks() const;
 private:

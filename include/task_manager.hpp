@@ -5,13 +5,10 @@
 #include <string>
 #include <vector>
 #include "task.hpp"
+#include "print_options.hpp"
 
 class TaskManager {
 public:
-    struct PrintOptions {
-        bool verbose = false;
-        bool nested = false;
-    };
 
     TaskManager() = default;
     ~TaskManager() = default;

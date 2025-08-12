@@ -2,6 +2,7 @@
 #include "task.hpp"
 
 #include <algorithm>
+#include <iostream>
 
 Person::Person(const std::string& name) : name(name) {}
 
@@ -37,13 +38,10 @@ void Person::set_all_tasks_to_done() {
     }
 }
 
-int Person::return_number_of_tasks(const TaskOptions& options) const {
+int Person::return_number_of_tasks(const PrintOptions& options) const {
     int count = 0;
     for (const Task* task : tasks) {
-        if (options.include_done && task->is_done()) {
-            count++;
-        }
-        if (options.nested && task->get_parent()) {
+        if (options.nested || !task->get_parent()) {
             count++;
         }
     }
@@ -56,4 +54,15 @@ void Person::assign_task(Task* task) {
 
 std::vector<Task*> Person::get_tasks() const {
     return tasks;
+}
+
+void Person::print_all_tasks(const PrintOptions& options) const {
+    for (const Task* task : tasks) {
+        if (options.verbose) {
+            std::cout << "Task ID: " << task->get_id() << ", Name: " << task->get_name() << std::endl;
+        }
+        if (options.nested || !task->get_parent()) {
+            std::cout << " - " << task->get_name() << std::endl;
+        }
+    }
 }
