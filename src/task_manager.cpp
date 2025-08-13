@@ -70,12 +70,9 @@ void TaskManager::print_line_indentations(int level) const {
     }
 }
 
-int TaskManager::create_task(const std::string& name, const std::string& description, Person* owner, Task* parent) {
+int TaskManager::create_task(const std::string& name, const std::string& description, Person* owner) {
     int new_id = tasks.size() + 1; // Simple ID generation
     auto new_task = std::make_unique<Task>(new_id, name, description, owner);
-    if (parent) {
-        parent->add_child(new_task.get());
-    }
     tasks.push_back(std::move(new_task));
     return new_id;
 }

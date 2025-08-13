@@ -37,8 +37,8 @@ void print_task_help() {
     std::cout << "Usage:\n";
     std::cout << "  taskcli task <command> [options]\n\n";
     std::cout << "Commands:\n";
-    std::cout << "  add        Add a new task\n";
-    std::cout << "  list      List all tasks\n";
+    std::cout << "  add -n <name> [-d <description>] [-o <owner>]        Add a new task\n";
+    std::cout << "  list       List all tasks\n";
     std::cout << "  delete     Delete a task\n";
     std::cout << "  complete   Mark a task as complete\n";
 }
@@ -64,13 +64,36 @@ void print_person_help() {
 
 int handle_task_command(std::span<const std::string> args) {
     if (args.empty()) {
-        std::cerr << "Error: No command provided for 'task'. Use --help for usage.\n";
+        std::cerr << "Error: No command provided for 'task'. Use 'help' for usage.\n";
         return 1;
     }
     std::string command = args[0];
     if (command == "help") {
         print_task_help();
         return 0;
+    } else if (command == "add") {
+        if (args.size() < 2) {
+            std::cerr << "Error: Not enough arguments for 'add'. Use 'help' for usage.\n";
+            return 1;
+        }
+        std::string name = args[1];
+        std::string description, owner_name;
+        std::unique_ptr<Person> owner = nullptr;
+        for (size_t i = 2; i < args.size(); ++i) {
+            if (args[i] == "-d" && i + 1 < args.size()) {
+                description = args[i + 1];
+                ++i;
+            } else if (args[i] == "-o" && i + 1 < args.size()) {
+                owner_name = args[i + 1];
+                owner = get_person_manager().find_person_by_name(owner_name);
+                if (!owner) {
+                    std::cerr << "Error: Owner '" << owner_name << "' not found.\n";
+                    return 1;
+                }
+                ++i;
+            }
+        }
+        get_task_manager().create_task(name, description, owner.get());
     }
 
     return 0;
@@ -78,7 +101,7 @@ int handle_task_command(std::span<const std::string> args) {
 
 int handle_person_command(std::span<const std::string> args) {
     if (args.empty()) {
-        std::cerr << "Error: No command provided for 'person'. Use --help for usage.\n";
+        std::cerr << "Error: No command provided for 'person'. Use 'help' for usage.\n";
         return 1;
     }
     std::string command = args[0];
@@ -89,7 +112,7 @@ int handle_person_command(std::span<const std::string> args) {
     
     if (command == "add") {
         if (args.size() < 2) {
-            std::cerr << "Error: Not enough arguments for 'add'. Use --help for usage.\n";
+            std::cerr << "Error: Not enough arguments for 'add'. Use 'help' for usage.\n";
             return 1;
         }
         std::cout << "Adding a new person...\n";
