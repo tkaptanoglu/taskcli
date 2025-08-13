@@ -26,10 +26,10 @@ public:
     void unown_task(int id);
     void unown_all_tasks();
 
-    void set_task_name(int id, const std::string& name);
+    int set_task_name(int id, const std::string& name);
     const std::string get_task_name(int id) const;
 
-    void set_task_description(int id, const std::string& description);
+    int set_task_description(int id, const std::string& description);
     const std::string get_task_description(int id) const;
 
     int advance_task_status(int id);

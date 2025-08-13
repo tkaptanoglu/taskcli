@@ -131,13 +131,15 @@ void TaskManager::unown_all_tasks() {
     }
 }
 
-void TaskManager::set_task_name(int id, const std::string& name) {
+int TaskManager::set_task_name(int id, const std::string& name) {
     Task* task = find_task_by_id(id);
     if (task) {
         task->set_name(name);
+        return 1;  // Success
     } else {
         std::cerr << "Task with ID " << id << " not found." << std::endl;
     }
+    return 0;  // Failure
 }
 
 const std::string TaskManager::get_task_name(int id) const {
@@ -148,11 +150,15 @@ const std::string TaskManager::get_task_name(int id) const {
     return task->get_name();
 }
 
-void TaskManager::set_task_description(int id, const std::string& description) {
+int TaskManager::set_task_description(int id, const std::string& description) {
     Task* task = find_task_by_id(id);
     if (task) {
         task->set_description(description);
+        return 1;  // Success
+    } else {
+        std::cerr << "Task with ID " << id << " not found." << std::endl;
     }
+    return 0;  // Failure
 }
 
 const std::string TaskManager::get_task_description(int id) const {

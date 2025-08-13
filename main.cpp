@@ -46,6 +46,8 @@ void print_task_help() {
     std::cout << "  assign <task_id> <person_name>                   Assign a task to a person\n";
     std::cout << "  unown <task_id>                                  Unassign a task from its owner\n";
     std::cout << "  unown-all                                        Unassign all tasks from their owners\n";
+    std::cout << "  set-name <task_id> <new_name>                    Change the name of a task\n";
+    std::cout << "  set-description <task_id> <new_description>      Change the description of a task\n";
 }
 
 void print_person_help() {
@@ -171,6 +173,30 @@ int handle_task_command(std::span<const std::string> args) {
     } else if (command == "unown-all") {
         get_task_manager().unown_all_tasks();
         std::cout << "All tasks unassigned successfully.\n";
+    } else if (command == "set--nae") {
+        if (args.size() < 3) {
+            std::cerr << "Error: Not enough arguments for 'set-task-name'. Use 'help' for usage.\n";
+            return 1;
+        }
+        int task_id = std::stoi(args[1]);
+        std::string new_name = args[2];
+        if (get_task_manager().set_task_name(task_id, new_name)) {
+            std::cout << "Task with ID " << task_id << " renamed to '" << new_name << "' successfully.\n";
+        } else {
+            std::cerr << "Error: Failed to rename task with ID " << task_id << ".\n";
+        }
+    } else if (command == "set-description") {
+        if (args.size() < 3) {
+            std::cerr << "Error: Not enough arguments for 'set-description'. Use 'help' for usage.\n";
+            return 1;
+        }
+        int task_id = std::stoi(args[1]);
+        std::string new_description = args[2];
+        if (get_task_manager().set_task_description(task_id, new_description)) {
+            std::cout << "Task with ID " << task_id << " description updated successfully.\n";
+        } else {
+            std::cerr << "Error: Failed to update description for task with ID " << task_id << ".\n";
+        }
     }
 
     return 0;
