@@ -45,6 +45,7 @@ void print_task_help() {
     std::cout << "  print <task_id> [-v:verbose] [-n:nested]         Print a task's details\n";
     std::cout << "  assign <task_id> <person_name>                   Assign a task to a person\n";
     std::cout << "  unown <task_id>                                  Unassign a task from its owner\n";
+    std::cout << "  unown-all                                        Unassign all tasks from their owners\n";
 }
 
 void print_person_help() {
@@ -167,6 +168,9 @@ int handle_task_command(std::span<const std::string> args) {
         int task_id = std::stoi(args[1]);
         get_task_manager().unown_task(task_id);
         std::cout << "Task with ID " << task_id << " unassigned successfully.\n";
+    } else if (command == "unown-all") {
+        get_task_manager().unown_all_tasks();
+        std::cout << "All tasks unassigned successfully.\n";
     }
 
     return 0;
