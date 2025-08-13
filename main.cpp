@@ -81,7 +81,7 @@ int handle_task_command(std::span<const std::string> args) {
         }
         std::string name = args[2];
         std::string description, owner_name;
-        Person* owner;
+        Person* owner = nullptr;
         for (size_t i = 2; i < args.size(); ++i) {
             if (args[i] == "-d" && i + 1 < args.size()) {
                 description = args[i + 1];

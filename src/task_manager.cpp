@@ -98,6 +98,9 @@ int TaskManager::delete_task(int id) {
 
 int TaskManager::assign_task(int id, Person* person) {
     Task* task = find_task_by_id(id);
+    if (task && task->get_owner()) {
+        task->get_owner()->remove_task(task);
+    }
     if (task && person) {
         task->set_owner(person);
         return 1;
