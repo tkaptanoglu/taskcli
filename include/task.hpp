@@ -18,7 +18,7 @@ public:
     };
 
     Task(int id, const std::string& name, const std::string& description, Person* owner = nullptr, Status status = Status::Todo, Task* parent = nullptr)
-        : id(id), name(name), description(description), owner(owner), status(status), parent(parent) {}
+        : id(id), name(name), description(description), owner(owner), status(status), parent(parent), level(1) {}
     ~Task() = default;
 
     const std::string get_name() const;

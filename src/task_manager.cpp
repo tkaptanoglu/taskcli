@@ -19,6 +19,8 @@ Task* TaskManager::find_task_by_id(int id) const {
 
 void TaskManager::print_all_tasks(const PrintOptions& options) const {
     for (const auto& task : tasks) {
+        // I am only sending the print request to the top-level tasks.
+        // The option "nested" will determine whether they then print their children or not.
         if (!task->get_parent()) {
             print_task(task.get(), options);
         }
@@ -44,6 +46,9 @@ void TaskManager::print_task(Task* task, const PrintOptions& options) const {
 
     print_line_indentations(task_level);
     std::cout << "Name: " << task->get_name() << "\n";
+
+    print_line_indentations(task_level);
+    std::cout << "Level: " << task->get_level() << "\n";
     
     print_line_indentations(task_level);
     std::cout << "Status: " << static_cast<int>(task->get_status()) << "\n";
@@ -57,6 +62,9 @@ void TaskManager::print_task(Task* task, const PrintOptions& options) const {
             std::cout << "Owner: None\n";
         }
     }
+
+    std::cout << std::endl;
+    
     if (options.nested && !task->get_parent()) {
         for (const auto& child : task->get_children()) {
             print_task(child, options);

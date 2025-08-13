@@ -38,7 +38,7 @@ void print_task_help() {
     std::cout << "  taskcli task <command> [options]\n\n";
     std::cout << "Commands:\n";
     std::cout << "  add -n <name> [-d <description>] [-o <owner>]        Add a new task\n";
-    std::cout << "  list       List all tasks\n";
+    std::cout << "  list [-v:verbose] [-n:nested]                        List all tasks\n";
     std::cout << "  delete     Delete a task\n";
     std::cout << "  complete   Mark a task as complete\n";
 }
@@ -76,7 +76,7 @@ int handle_task_command(std::span<const std::string> args) {
             std::cerr << "Error: Not enough arguments for 'add'. Use 'help' for usage.\n";
             return 1;
         }
-        std::string name = args[1];
+        std::string name = args[2];
         std::string description, owner_name;
         std::unique_ptr<Person> owner = nullptr;
         for (size_t i = 2; i < args.size(); ++i) {
@@ -94,6 +94,11 @@ int handle_task_command(std::span<const std::string> args) {
             }
         }
         get_task_manager().create_task(name, description, owner.get());
+    } else if (command == "list") {
+        PrintOptions options;
+        options.verbose = std::find(args.begin(), args.end(), "-v") != args.end();
+        options.nested = std::find(args.begin(), args.end(), "-n") != args.end();
+        get_task_manager().print_all_tasks(options);
     }
 
     return 0;
