@@ -34,6 +34,9 @@ int Task::get_level() const {
 }
 
 void Task::unown() {
+    if (owner) {
+        owner->remove_task(this);
+    }
     owner = nullptr;
 }
 

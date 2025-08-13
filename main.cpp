@@ -44,6 +44,7 @@ void print_task_help() {
     std::cout << "  complete <task_id>                               Mark a task as complete\n";
     std::cout << "  print <task_id> [-v:verbose] [-n:nested]         Print a task's details\n";
     std::cout << "  assign <task_id> <person_name>                   Assign a task to a person\n";
+    std::cout << "  unown <task_id>                                  Unassign a task from its owner\n";
 }
 
 void print_person_help() {
@@ -75,7 +76,7 @@ int handle_task_command(std::span<const std::string> args) {
         print_task_help();
         return 0;
     } else if (command == "add") {
-        if (args.size() < 2) {
+        if (args.size() < 3) {
             std::cerr << "Error: Not enough arguments for 'add'. Use 'help' for usage.\n";
             return 1;
         }
@@ -158,6 +159,14 @@ int handle_task_command(std::span<const std::string> args) {
         } else {
             std::cerr << "Error: Failed to assign task with ID " << task_id << " to " << person_name << ".\n";
         }
+    } else if (command == "unown") {
+        if (args.size() < 2) {
+            std::cerr << "Error: Not enough arguments for 'unown'. Use 'help' for usage.\n";
+            return 1;
+        }
+        int task_id = std::stoi(args[1]);
+        get_task_manager().unown_task(task_id);
+        std::cout << "Task with ID " << task_id << " unassigned successfully.\n";
     }
 
     return 0;
