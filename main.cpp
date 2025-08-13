@@ -48,6 +48,8 @@ void print_task_help() {
     std::cout << "  unown-all                                        Unassign all tasks from their owners\n";
     std::cout << "  set-name <task_id> <new_name>                    Change the name of a task\n";
     std::cout << "  set-description <task_id> <new_description>      Change the description of a task\n";
+    std::cout << "  advance-status <task_id>                         Advance the status of a task\n";
+    std::cout << "  mark-done <task_id>                              Mark a task as done\n";
 }
 
 void print_person_help() {
@@ -196,6 +198,28 @@ int handle_task_command(std::span<const std::string> args) {
             std::cout << "Task with ID " << task_id << " description updated successfully.\n";
         } else {
             std::cerr << "Error: Failed to update description for task with ID " << task_id << ".\n";
+        }
+    } else if (command == "advance-status") {
+        if (args.size() < 2) {
+            std::cerr << "Error: Not enough arguments for 'advance-status'. Use 'help' for usage.\n";
+            return 1;
+        }
+        int task_id = std::stoi(args[1]);
+        if (get_task_manager().advance_task_status(task_id)) {
+            std::cout << "Task with ID " << task_id << " status advanced successfully.\n";
+        } else {
+            std::cerr << "Error: Failed to advance status for task with ID " << task_id << ".\n";
+        }
+    } else if (command == "mark-done") {
+        if (args.size() < 2) {
+            std::cerr << "Error: Not enough arguments for 'mark-done'. Use 'help' for usage.\n";
+            return 1;
+        }
+        int task_id = std::stoi(args[1]);
+        if (get_task_manager().mark_task_as_done(task_id)) {
+            std::cout << "Task with ID " << task_id << " marked as done successfully.\n";
+        } else {
+            std::cerr << "Error: Failed to mark task with ID " << task_id << " as done.\n";
         }
     }
 

@@ -89,11 +89,11 @@ int TaskManager::delete_task(int id) {
     Task* task = find_task_by_id(id);
     if (!task) {
         std::cerr << "Task with ID " << id << " not found." << std::endl;
-        return -1; // Task not found
+        return 0; // Task not found
     }
     tasks.erase(std::remove_if(tasks.begin(), tasks.end(),
         [task](const std::unique_ptr<Task>& t) { return t.get() == task; }), tasks.end());
-    return 0; // Success
+    return 1; // Success
 }
 
 int TaskManager::assign_task(int id, Person* person) {
@@ -174,16 +174,16 @@ int TaskManager::advance_task_status(int id) {
     if (task) {
         return task->advance_status();
     }
-    return -1; // Task not found
+    return 0; // Task not found
 }
 
 int TaskManager::mark_task_as_done(int id) {
     Task* task = find_task_by_id(id);
     if (task) {
         task->mark_as_done();
-        return 0; // Success
+        return 1; // Success
     }
-    return -1; // Task not found
+    return 0; // Task not found
 }
 
 void TaskManager::make_child_task(int parent_id, int child_id) {
