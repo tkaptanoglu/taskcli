@@ -11,6 +11,11 @@ public:
     Person(const std::string& name);
     ~Person();
 
+    Person(const Person&) = delete;
+    Person& operator=(const Person&) = delete;
+    Person(Person&&) = default;
+    Person& operator=(Person&&) = default;
+
     const std::string get_name() const;
     void set_name(const std::string& new_name);
 

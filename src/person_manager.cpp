@@ -11,11 +11,18 @@ PersonManager::~PersonManager() {
     delete_all_people();
 }
 
-std::unique_ptr<Person> PersonManager::find_person_by_name(const std::string& name) const {
+const Person* PersonManager::find_person_by_name(const std::string& name) const {
     for (const auto& person : people) {
         if (person->get_name() == name) {
-            return std::make_unique<Person>(*person);
+            return person.get();              // return raw pointer, no copy
         }
+    }
+    return nullptr;
+}
+
+Person* PersonManager::find_person_by_name(const std::string& name) {
+    for (auto& person : people) {
+        if (person->get_name() == name) return person.get();
     }
     return nullptr;
 }

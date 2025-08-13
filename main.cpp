@@ -1,13 +1,14 @@
+#include <algorithm>
+#include <iomanip>
 #include <iostream>
+#include <span>
 #include <string>
 #include <sstream>
 #include <vector>
-#include <span>
-#include <algorithm>
 
-#include "task_manager.hpp"
 #include "person_manager.hpp"
 #include "print_options.hpp"
+#include "task_manager.hpp"
 
 // Singleton accessor for TaskManager
 TaskManager& get_task_manager() {
@@ -80,7 +81,7 @@ int handle_task_command(std::span<const std::string> args) {
         }
         std::string name = args[2];
         std::string description, owner_name;
-        std::unique_ptr<Person> owner = nullptr;
+        Person* owner;
         for (size_t i = 2; i < args.size(); ++i) {
             if (args[i] == "-d" && i + 1 < args.size()) {
                 description = args[i + 1];
@@ -95,7 +96,7 @@ int handle_task_command(std::span<const std::string> args) {
                 ++i;
             }
         }
-        get_task_manager().create_task(name, description, owner.get());
+        get_task_manager().create_task(name, description, owner);
         std::cout << "Task '" << name << "' added successfully.\n";
     } else if (command == "list") {
         PrintOptions options;
@@ -141,13 +142,22 @@ int handle_task_command(std::span<const std::string> args) {
         }
         int task_id = std::stoi(args[1]);
         std::string person_name = args[2];
-        std::unique_ptr<Person> person = get_person_manager().find_person_by_name(person_name);
+        Person* person = get_person_manager().find_person_by_name(person_name);
         if (!person) {
             std::cerr << "Error: Person '" << person_name << "' not found.\n";
             return 1;
         }
-        get_task_manager().assign_task(task_id, person.get());
-        std::cout << "Task with ID " << task_id << " assigned to " << person_name << " successfully.\n";
+        Task* task = get_task_manager().get_task(task_id);
+        if (!task) {
+            std::cerr << "Error: Task with ID " << task_id << " not found.\n";
+            return 1;
+        }
+        if (get_task_manager().assign_task(task_id, person)
+            && get_person_manager().assign_task(person->get_name(), task)) {
+            std::cout << "Task with ID " << task_id << " assigned to " << person_name << " successfully.\n";
+        } else {
+            std::cerr << "Error: Failed to assign task with ID " << task_id << " to " << person_name << ".\n";
+        }
     }
 
     return 0;
@@ -291,7 +301,7 @@ int main() {
         // Collect remaining tokens into a vector
         std::vector<std::string> args;
         std::string arg;
-        while (iss >> arg) {
+        while (iss >> std::quoted(arg)) {
             args.push_back(arg);
         }
 

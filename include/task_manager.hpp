@@ -22,7 +22,7 @@ public:
     int create_task(const std::string& name, const std::string& description, Person* owner = nullptr);
     int delete_task(int id);
 
-    void assign_task(int id, Person* person);
+    int assign_task(int id, Person* person);
     void unown_task(int id);
     void unown_all_tasks();
 

@@ -31,7 +31,8 @@ public:
     void print_persons_tasks(const std::string& name, const PrintOptions& options) const;
     void print_all_peoples_task_counts(bool nested) const;
 
-    std::unique_ptr<Person> find_person_by_name(const std::string& name) const;
+    Person* find_person_by_name(const std::string& name);
+    const Person* find_person_by_name(const std::string& name) const;
 private:
     std::vector<std::unique_ptr<Person>> people;
 };
