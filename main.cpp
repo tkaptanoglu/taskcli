@@ -56,7 +56,7 @@ void print_person_help() {
     std::cout << "  delete-tasks                                 Delete all tasks assigned to a person\n";
     std::cout << "  assign-task <name> <task-id>                 Assign a task to a person\n";
     std::cout << "  set-all-tasks-done <name>                    Mark all tasks of a person as done\n";
-    std::cout << "  list-one <name> [-v:verbose]                 List the details of one person";
+    std::cout << "  list-one <name> [-v:verbose]                 List the details of one person\n";
     std::cout << "  list-tasks <name> [-v:verbose] [-n:nested]   List all tasks of a person\n";
     std::cout << "  list-tasks-count <name>                      List the count of tasks of a person\n";
 }
