@@ -39,8 +39,8 @@ void print_task_help() {
     std::cout << "Commands:\n";
     std::cout << "  add -n <name> [-d <description>] [-o <owner>]        Add a new task\n";
     std::cout << "  list [-v:verbose] [-n:nested]                        List all tasks\n";
-    std::cout << "  delete     Delete a task\n";
-    std::cout << "  complete   Mark a task as complete\n";
+    std::cout << "  delete <task_id>                                     Delete a task\n";
+    std::cout << "  complete <task_id>                                   Mark a task as complete\n";
 }
 
 void print_person_help() {
@@ -99,6 +99,20 @@ int handle_task_command(std::span<const std::string> args) {
         options.verbose = std::find(args.begin(), args.end(), "-v") != args.end();
         options.nested = std::find(args.begin(), args.end(), "-n") != args.end();
         get_task_manager().print_all_tasks(options);
+    } else if (command == "delete") {
+        if (args.size() < 2) {
+            std::cerr << "Error: Not enough arguments for 'delete'. Use 'help' for usage.\n";
+            return 1;
+        }
+        int task_id = std::stoi(args[1]);
+        get_task_manager().delete_task(task_id);
+    } else if (command == "complete") {
+        if (args.size() < 2) {
+            std::cerr << "Error: Not enough arguments for 'complete'. Use 'help' for usage.\n";
+            return 1;
+        }
+        int task_id = std::stoi(args[1]);
+        get_task_manager().mark_task_as_done(task_id);
     }
 
     return 0;

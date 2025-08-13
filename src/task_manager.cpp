@@ -64,7 +64,7 @@ void TaskManager::print_task(Task* task, const PrintOptions& options) const {
     }
 
     std::cout << std::endl;
-    
+
     if (options.nested && !task->get_parent()) {
         for (const auto& child : task->get_children()) {
             print_task(child, options);
@@ -74,7 +74,7 @@ void TaskManager::print_task(Task* task, const PrintOptions& options) const {
 
 void TaskManager::print_line_indentations(int level) const {
     for (int i = 0; i < level - 1; ++i) {
-        std::cout << "-"; // Indentation for task level
+        std::cout << "--"; // Indentation for task level
     }
 }
 
