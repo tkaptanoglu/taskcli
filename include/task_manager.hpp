@@ -35,7 +35,7 @@ public:
     int advance_task_status(int id);
     int mark_task_as_done(int id);
 
-    void make_child_task(int parent_id, int child_id);
+    int make_child_task(int parent_id, int child_id);
 
     void print_all_task_owners(const PrintOptions& options) const;
 

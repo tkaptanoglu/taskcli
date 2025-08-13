@@ -61,6 +61,12 @@ void TaskManager::print_task(Task* task, const PrintOptions& options) const {
         } else {
             std::cout << "Owner: None\n";
         }
+        Task* parent = task->get_parent();
+        if (parent) {
+            std::cout << "Parent: " << parent->get_name() << "\n";
+        } else {
+            std::cout << "Parent: None\n";
+        }
     }
 
     std::cout << std::endl;
@@ -186,13 +192,17 @@ int TaskManager::mark_task_as_done(int id) {
     return 0; // Task not found
 }
 
-void TaskManager::make_child_task(int parent_id, int child_id) {
+int TaskManager::make_child_task(int parent_id, int child_id) {
     Task* parent = find_task_by_id(parent_id);
+    if (parent) std::cout << "Found Parent: " << parent->get_name() << "\n";
     Task* child = find_task_by_id(child_id);
+    if (child) std::cout << "Found Child: " << child->get_name() << "\n";
     if (parent && child) {
         parent->add_child(child);
         child->set_parent(parent);
+        return 1; // Success
     }
+    return 0; // Failure
 }
 
 void TaskManager::print_all_task_owners(const PrintOptions& options) const {

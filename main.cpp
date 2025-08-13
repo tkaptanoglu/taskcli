@@ -50,6 +50,7 @@ void print_task_help() {
     std::cout << "  set-description <task_id> <new_description>      Change the description of a task\n";
     std::cout << "  advance-status <task_id>                         Advance the status of a task\n";
     std::cout << "  mark-done <task_id>                              Mark a task as done\n";
+    std::cout << "  make-child <parent_id> <child_id>                Make a task a child of another task\n";
 }
 
 void print_person_help() {
@@ -220,6 +221,18 @@ int handle_task_command(std::span<const std::string> args) {
             std::cout << "Task with ID " << task_id << " marked as done successfully.\n";
         } else {
             std::cerr << "Error: Failed to mark task with ID " << task_id << " as done.\n";
+        }
+    } else if (command == "make-child") {
+        if (args.size() < 3) {
+            std::cerr << "Error: Not enough arguments for 'make-child'. Use --help for usage.\n";
+            return 1;
+        }
+        int parent_id = std::stoi(args[1]);
+        int child_id = std::stoi(args[2]);
+        if(get_task_manager().make_child_task(parent_id, child_id)) {
+            std::cout << "Task with ID " << child_id << " made a child of task with ID " << parent_id << " successfully.\n";
+        } else {
+            std::cerr << "Error: Failed to make task with ID " << child_id << " a child of task with ID " << parent_id << ".\n";
         }
     }
 
