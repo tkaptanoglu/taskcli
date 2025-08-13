@@ -18,7 +18,7 @@ public:
     int change_name(const std::string& old_name, const std::string& new_name);
 
     void delete_all_people();
-    void add_person(const std::string& name);
+    int add_person(const std::string& name);
     int delete_person(const std::string& name);
 
     int delete_persons_all_tasks(const std::string& name);

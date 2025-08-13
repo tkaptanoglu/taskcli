@@ -194,8 +194,9 @@ int handle_person_command(std::span<const std::string> args) {
             std::cerr << "Error: Name cannot be empty.\n";
             return 1;
         }
-        get_person_manager().add_person(name); // Add person using PersonManager
-        std::cout << "Person '" << name << "' added successfully.\n";
+        if (get_person_manager().add_person(name)) { // Add person using PersonManager
+            std::cout << "Person '" << name << "' added successfully.\n";
+        }
     } else if (command == "list") {
         PrintOptions options;
         options.verbose = std::find(args.begin(), args.end(), "-v") != args.end();

@@ -49,8 +49,14 @@ void PersonManager::delete_all_people() {
 }
 
 // Add a new person
-void PersonManager::add_person(const std::string& name) {
+int PersonManager::add_person(const std::string& name) {
+    // If person of the same name exists, print an error and return 0
+    if (find_person_by_name(name)) {
+        std::cerr << "Error: Person '" << name << "' already exists." << std::endl;
+        return 0;
+    }
     people.emplace_back(std::make_unique<Person>(name));
+    return 1;  // Success
 }
 
 // Delete a person's all tasks
