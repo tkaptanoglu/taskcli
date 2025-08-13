@@ -94,6 +94,7 @@ int handle_task_command(std::span<const std::string> args) {
             }
         }
         get_task_manager().create_task(name, description, owner.get());
+        std::cout << "Task '" << name << "' added successfully.\n";
     } else if (command == "list") {
         PrintOptions options;
         options.verbose = std::find(args.begin(), args.end(), "-v") != args.end();
@@ -105,14 +106,22 @@ int handle_task_command(std::span<const std::string> args) {
             return 1;
         }
         int task_id = std::stoi(args[1]);
-        get_task_manager().delete_task(task_id);
+        if (get_task_manager().delete_task(task_id)) {
+            std::cout << "Task with ID " << task_id << " deleted successfully.\n";
+        } else {
+            std::cerr << "Error: Failed to delete task with ID " << task_id << ".\n";
+        }
     } else if (command == "complete") {
         if (args.size() < 2) {
             std::cerr << "Error: Not enough arguments for 'complete'. Use 'help' for usage.\n";
             return 1;
         }
         int task_id = std::stoi(args[1]);
-        get_task_manager().mark_task_as_done(task_id);
+        if (get_task_manager().mark_task_as_done(task_id)) {
+            std::cout << "Task with ID " << task_id << " marked as complete successfully.\n";
+        } else {
+            std::cerr << "Error: Failed to mark task with ID " << task_id << " as complete.\n";
+        }
     }
 
     return 0;
