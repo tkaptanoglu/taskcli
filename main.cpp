@@ -29,7 +29,7 @@ void print_help() {
     std::cout << "  task       Manage tasks (add, list, delete, etc.)\n";
     std::cout << "  person     Manage people (add, list, rename, etc.)\n\n";
     std::cout << "Global Options:\n";
-    std::cout << "  --help     Show this help message\n";
+    std::cout << "  help       Show this help message\n";
 }
 
 void print_task_help() {
