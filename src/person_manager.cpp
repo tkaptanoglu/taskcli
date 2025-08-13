@@ -132,7 +132,7 @@ int PersonManager::delete_person(const std::string& name) {
         });
     if (it != people.end()) {
         people.erase(it, people.end());
-        return 0;  // Success
+        return 1;  // Success
     }
-    return -1;  // Person not found
+    return 0;  // Person not found
 }
