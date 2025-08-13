@@ -37,10 +37,12 @@ void print_task_help() {
     std::cout << "Usage:\n";
     std::cout << "  taskcli task <command> [options]\n\n";
     std::cout << "Commands:\n";
-    std::cout << "  add -n <name> [-d <description>] [-o <owner>]        Add a new task\n";
-    std::cout << "  list [-v:verbose] [-n:nested]                        List all tasks\n";
-    std::cout << "  delete <task_id>                                     Delete a task\n";
-    std::cout << "  complete <task_id>                                   Mark a task as complete\n";
+    std::cout << "  add -n <name> [-d <description>] [-o <owner>]    Add a new task\n";
+    std::cout << "  list [-v:verbose] [-n:nested]                    List all tasks\n";
+    std::cout << "  delete <task_id>                                 Delete a task\n";
+    std::cout << "  complete <task_id>                               Mark a task as complete\n";
+    std::cout << "  print <task_id> [-v:verbose] [-n:nested]         Print a task's details\n";
+    std::cout << "  assign <task_id> <person_name>                   Assign a task to a person\n";
 }
 
 void print_person_help() {
@@ -122,6 +124,30 @@ int handle_task_command(std::span<const std::string> args) {
         } else {
             std::cerr << "Error: Failed to mark task with ID " << task_id << " as complete.\n";
         }
+    } else if (command == "print") {
+        if (args.size() < 2) {
+            std::cerr << "Error: Not enough arguments for 'print'. Use 'help' for usage.\n";
+            return 1;
+        }
+        int task_id = std::stoi(args[1]);
+        PrintOptions options;
+        options.verbose = std::find(args.begin(), args.end(), "-v") != args.end();
+        options.nested = std::find(args.begin(), args.end(), "-n") != args.end();
+        get_task_manager().print_task(task_id, options);
+    } else if (command == "assign") {
+        if (args.size() < 3) {
+            std::cerr << "Error: Not enough arguments for 'assign'. Use 'help' for usage.\n";
+            return 1;
+        }
+        int task_id = std::stoi(args[1]);
+        std::string person_name = args[2];
+        std::unique_ptr<Person> person = get_person_manager().find_person_by_name(person_name);
+        if (!person) {
+            std::cerr << "Error: Person '" << person_name << "' not found.\n";
+            return 1;
+        }
+        get_task_manager().assign_task(task_id, person.get());
+        std::cout << "Task with ID " << task_id << " assigned to " << person_name << " successfully.\n";
     }
 
     return 0;
