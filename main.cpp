@@ -106,12 +106,12 @@ int handle_person_command(std::span<const std::string> args) {
         std::cout << "Listing all people...\n";
         get_person_manager().print_all_people(options); // Print all people using PersonManager
     } else if (command == "rename") {
-        if (args.size() < 4) {
+        if (args.size() < 3) {
             std::cerr << "Error: Not enough arguments for 'rename'. Use --help for usage.\n";
             return 1;
         }
-        std::string old_name = args[2];
-        std::string new_name = args[3];
+        std::string old_name = args[1];
+        std::string new_name = args[2];
         if (new_name.empty()) {
             std::cerr << "Error: New name cannot be empty.\n";
             return 1;

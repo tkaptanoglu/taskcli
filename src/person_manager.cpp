@@ -27,10 +27,10 @@ int PersonManager::change_name(const std::string& old_name, const std::string& n
     for (const auto& person : people) {
         if (person->get_name() == old_name) {
             person->set_name(new_name);
-            return 0;  // Success
+            return 1;  // Success
         }
     }
-    return -1;  // Person not found
+    return 0;  // Person not found
 }
 
 // Delete all people
@@ -51,9 +51,9 @@ int PersonManager::delete_persons_all_tasks(const std::string& name) {
     auto person = find_person_by_name(name);
     if (person) {
         person->remove_all_tasks();
-        return 0;  // Success
+        return 1;  // Success
     }
-    return -1;  // Person not found
+    return 0;  // Person not found
 }
 
 // Set a person's all tasks as done
@@ -61,9 +61,9 @@ int PersonManager::set_persons_all_tasks_as_done(const std::string& name) {
     auto person = find_person_by_name(name);
     if (person) {
         person->set_all_tasks_to_done();
-        return 0;  // Success
+        return 1;  // Success
     }
-    return -1;  // Person not found
+    return 0;  // Person not found
 }
 
 // Assign a task to a person
@@ -71,11 +71,11 @@ int PersonManager::assign_task(const std::string& name, Task* task) {
     auto person = find_person_by_name(name);
     if (person) {
         person->assign_task(task);
-        return 0;  // Success
+        return 1;  // Success
     } else {
         std::cerr << "Error: Person is null." << std::endl;
     }
-    return -1;  // Failure
+    return 0;  // Failure
 }
 
 // Print operations
