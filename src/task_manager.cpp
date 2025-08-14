@@ -55,12 +55,16 @@ void TaskManager::print_task(Task* task, const PrintOptions& options) const {
     if (options.verbose) {
         print_line_indentations(task_level);
         std::cout << "Description: " << task->get_description() << "\n";
+
+        print_line_indentations(task_level);
         Person* owner = task->get_owner();
         if (owner) {
             std::cout << "Owner: " << owner->get_name() << "\n";
         } else {
             std::cout << "Owner: None\n";
         }
+        
+        print_line_indentations(task_level);
         Task* parent = task->get_parent();
         if (parent) {
             std::cout << "Parent: " << parent->get_name() << "\n";
@@ -71,7 +75,7 @@ void TaskManager::print_task(Task* task, const PrintOptions& options) const {
 
     std::cout << std::endl;
 
-    if (options.nested && !task->get_parent()) {
+    if (options.nested) {
         for (const auto& child : task->get_children()) {
             print_task(child, options);
         }

@@ -71,6 +71,7 @@ bool Task::is_done() const {
 
 void Task::set_parent(Task* parent) {
     this->parent = parent;
+    this->level = parent->get_level() + 1;
 }
 
 Task* Task::get_parent() const {
