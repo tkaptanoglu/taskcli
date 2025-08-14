@@ -1,6 +1,6 @@
   ## About
 
-  This project has no purpose other than to get me back into coding.
+  This project has no other purpose than to get me back into coding.
   I fell in love with C++ in 2004 and made a living out of it between 2007-2010. I hadn't used it ever since, until just now.
   So, here goes, a task manager CLI because why not.
 
