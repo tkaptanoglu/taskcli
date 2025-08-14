@@ -213,10 +213,12 @@ void TaskManager::print_all_task_owners(const PrintOptions& options) const {
     for (const auto& task : tasks) {
         Person* owner = task->get_owner();
         if (owner) {
-            std::cout << "Task ID: " << task->get_id() << ", Owner: " << owner->get_name() << std::endl;
+            std::cout << "Task ID: " << task->get_id() << ": " << task->get_name() << std::endl;
+            std::cout << "Owner: " << owner->get_name() << std::endl;
         } else {
-            std::cout << "Task ID: " << task->get_id() << " has no owner." << std::endl;
+            std::cout << "Task ID: " << task->get_id() << ": " << task->get_name() << " has no owner." << std::endl;
         }
+        std::cout << std::endl;
     }
 }
 

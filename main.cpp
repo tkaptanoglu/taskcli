@@ -51,6 +51,7 @@ void print_task_help() {
     std::cout << "  advance-status <task_id>                         Advance the status of a task\n";
     std::cout << "  mark-done <task_id>                              Mark a task as done\n";
     std::cout << "  make-child <parent_id> <child_id>                Make a task a child of another task\n";
+    std::cout << "  print-owners                                     Print all task owners\n";
 }
 
 void print_person_help() {
@@ -234,6 +235,10 @@ int handle_task_command(std::span<const std::string> args) {
         } else {
             std::cerr << "Error: Failed to make task with ID " << child_id << " a child of task with ID " << parent_id << ".\n";
         }
+    } else if (command == "print-owners") {
+        PrintOptions options;
+        options.nested = std::find(args.begin(), args.end(), "-n") != args.end();
+        get_task_manager().print_all_task_owners(options);
     }
 
     return 0;
