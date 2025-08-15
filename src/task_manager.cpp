@@ -198,9 +198,7 @@ int TaskManager::mark_task_as_done(int id) {
 
 int TaskManager::make_child_task(int parent_id, int child_id) {
     Task* parent = find_task_by_id(parent_id);
-    if (parent) std::cout << "Found Parent: " << parent->get_name() << "\n";
     Task* child = find_task_by_id(child_id);
-    if (child) std::cout << "Found Child: " << child->get_name() << "\n";
     if (parent && child) {
         parent->add_child(child);
         child->set_parent(parent);
