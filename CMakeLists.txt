@@ -15,3 +15,9 @@ add_executable(taskcli
     src/person.cpp
     src/person_manager.cpp
 )
+
+add_executable(taskcli_test_unit_person
+    tests/unit/person_unit_test.cpp
+    src/person.cpp
+    src/task.cpp
+)
