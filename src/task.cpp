@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "task.hpp"
 #include "person.hpp"
 
@@ -70,6 +72,10 @@ bool Task::is_done() const {
 }
 
 void Task::set_parent(Task* parent) {
+    if (parent == this) {
+        std::cerr << "[WARNING] Task::set_parent: self-parenting is not allowed\n";
+        return;
+    }
     this->parent = parent;
     this->level = parent->get_level() + 1;
 }
@@ -79,6 +85,9 @@ Task* Task::get_parent() const {
 }
 
 void Task::add_child(Task* child) {
+    if (child == this) {
+        return;
+    }
     children.push_back(child);
 }
 
